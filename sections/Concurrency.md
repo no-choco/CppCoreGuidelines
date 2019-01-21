@@ -1052,14 +1052,14 @@ RAII를 적용하지 않은 `lock()`과 `unlock()`을 지적하라.
 
 이름을 부여하지 않은 `lock_guard`와 `unique_lock`을 지적하라
 
-### <a name="Rconc-mutex"></a>CP.50: Define a `mutex` together with the data it guards. Use `synchronized_value<T>` where possible
+### <a name="Rconc-mutex"></a>CP.50: `mutex` 를 보호(guard) 해야 하는 데이터와 함께 선언하라. 가능한 경우에는  `synchronized_value<T>` 를 사용하라
 
 ##### Reason
 
-It should be obvious to a reader that the data is to be guarded and how. This decreases the chance of the wrong mutex being locked, or the mutex not being locked.
+코드를 읽는 사람에게 있어 데이터가 보호된다는 사실과 어떻게 보호될지를 분명히 전달한다. 이는 뮤텍스를 잠그지 않거나 엉뚱한 뮤텍스를 잠글 확률을 낮춘다.
 
-Using a `synchronized_value<T>` ensures that the data has a mutex, and the right mutex is locked when the data is accessed.
-See the [WG21 proposal](http://wg21.link/p0290)) to add `synchronized_value` to a future TS or revision of the C++ standard.
+`synchronized_value<T>` 를 사용하는 것은 해당 데이터가 뮤텍스를 가지고 있으며, 데이터 접근시 해당되는 올바른 뮤텍스가 잠길 것임을 보장한다.
+`synchronized_value` 를 이후의 TS 나 C++ 표준에 추가하기 위한 [WG21 proposal](http://wg21.link/p0290)) 을 참고하라.
 
 ##### Example
 
@@ -1079,7 +1079,7 @@ See the [WG21 proposal](http://wg21.link/p0290)) to add `synchronized_value` to 
 
 ##### Enforcement
 
-??? Possible?
+??? 가능한가?
 
 ## <a name="SScp-par"></a>CP.par: 병렬성(Parallelism)
 
@@ -1255,15 +1255,15 @@ lock-free 코드를 적용하기에 앞서서 전문가가 되어라.
 * Damian Dechev and Bjarne Stroustrup: Scalable Non-blocking Concurrent Objects for Mission Critical Code. ACM OOPSLA'09. October 2009
 * Damian Dechev, Peter Pirkelbauer, Nicolas Rouquette, and Bjarne Stroustrup: Semantically Enhanced Containers for Concurrent Real-Time Systems. Proc. 16th Annual IEEE International Conference and Workshop on the Engineering of Computer Based Systems (IEEE ECBS). April 2009.
 
-### <a name="Rconc-double"></a>CP.110: Do not write your own double-checked locking for initialization
+### <a name="Rconc-double"></a>CP.110: 초기화를 위한 독자적인 이중 확인 잠금 (double-checked locking) 코드를 작성하지 말라
 
 ##### Reason
 
-Since C++11, static local variables are now initialized in a thread-safe way. When combined with the RAII pattern, static local variables can replace the need for writing your own double-checked locking for initialization. std::call_once can also achieve the same purpose. Use either static local variables of C++11 or std::call_once instead of writing your own double-checked locking for initialization.
+C++11 이후부터는, 정적 지역 변수들이 스레드 안전 (thread-safe) 한 방식으로 초기화된다. 따라서 RAII 패턴과 함께 사용시, 정적 지역 변수들의 사용은 초기화를 위한 독자적인 이중 확인 잠금 (double-checked locking) 코드를 작성해야 할 필요성을 대체한다. 또한 std::call_once 사용 역시 동일한 목적을 달성할 수 있다. 그러므로 독자적인 이중 확인 잠금 코드를 작성하기보다는 C++11 의 정적 지역 변수나 std::call_once 을 사용하라.
 
 ##### Example
 
-Example with std::call_once.
+std::call_once 을 사용하는 예제.
 
 ```c++
     void f()
@@ -1277,7 +1277,7 @@ Example with std::call_once.
     }
 ```
 
-Example with thread-safe static local variables of C++11.
+C++11 의 스레드 안전한 정적 지역 변수를 사용하는 예제.
 
 ```c++
     void f()
