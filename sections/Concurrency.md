@@ -312,12 +312,12 @@ C++ 에선, 동기화를 원한다면 `atomic` 타입들을 사용해야 한다:
 ##### See also
 [`volatile`의 적절한 사용](#Rconc-volatile2)
 
-### <a name="Rconc-tools"></a>CP.9: Whenever feasible use tools to validate your concurrent code
+### <a name="Rconc-tools"></a>CP.9: 가능한 모든 경우에, 도구 (tool) 를 이용하여 자신의 병행 실행 코드를 검증하라
 
-Experience shows that concurrent code is exceptionally hard to get right
-and that compile-time checking, run-time checks, and testing are less effective at finding concurrency errors
-than they are at finding errors in sequential code.
-Subtle concurrency errors can have dramatically bad effects, including memory corruption and deadlocks.
+경험이 보여주듯, 병행 실행 코드는 올바르게 작성하기가 극히 어려우며,
+컴파일 시점 점검, 실행 시점 점검 및 테스팅을 통한 병행 실행 문제를 검출하는 것이
+순차적인 코드에서 일반적인 문제점을 찾는 것만큼 효과적이지 않다.
+미묘한 병행 실행 오류들은 메모리 손상이나 교착 상태와 같은 심각한 폐해를 가져올 수 있다.
 
 ##### Example
 
@@ -325,30 +325,30 @@ Subtle concurrency errors can have dramatically bad effects, including memory co
 
 ##### Note
 
-Thread safety is challenging, often getting the better of experienced programmers: tooling is an important strategy to mitigate those risks.
-There are many tools "out there", both commercial and open-source tools, both research and production tools.
-Unfortunately people's needs and constraints differ so dramatically that we cannot make specific recommendations,
-but we can mention:
+스레드 안전한 프로그램을 만드는 것은 숙달된 개발자들조차 종종 곤란하게 만드는 만만찮은 작업이다: 적절한 도구를 사용하는 것은 이러한 위험을 덜 수 있는 중요한 전략이다.
+이러한 도구들은 상용 / 오픈소스 와 연구용 / 생산용을 가리지 않고 다양한 형태의 수많은 종류가 제공되고 있다.
+안타깝게도, 각자의 요구사항과 제약사항이 모두 다르므로, 특정 도구를 추천하기는 어려우나,
+몇가지를 거론할 수는 있다:
 
-* Static enforcement tools: both [clang](http://clang.llvm.org/docs/ThreadSafetyAnalysis.html)
-and some older versions of [GCC](https://gcc.gnu.org/wiki/ThreadSafetyAnnotation)
-have some support for static annotation of thread safety properties.
-Consistent use of this technique turns many classes of thread-safety errors into compile-time errors.
-The annotations are generally local (marking a particular member variable as guarded by a particular mutex),
-and are usually easy to learn. However, as with many static tools, it can often present false negatives;
-cases that should have been caught but were allowed.
+* 정적 지침 도구: [clang](http://clang.llvm.org/docs/ThreadSafetyAnalysis.html)
+과 [GCC](https://gcc.gnu.org/wiki/ThreadSafetyAnnotation) 의
+몇몇 지난 버전들은 스레드 안전의 특성과 관련된 몇가지 정적 주해문 (static annotation) 을 지원한다.
+이러한 기법의 일관성 있는 사용은 다양한 종류의 스레드 안전 관련 오류를 컴파일 시점 오류로 만들어준다.
+이러한 주해문들은 일반적으로 지역적이며 (특정 멤버 변수를 특정 뮤텍스를 통해 보호되게 표시함으로써),
+대개의 경우 쉽게 배울 수 있다. 그러나, 다른 많은 정적 도구들과 마찬가지로,
+본디 검출되어야 하나 허용 처리되는 잘못된 거짓 음성 결과를 종종 제출할 수도 있다.
 
-* dynamic enforcement tools: Clang's [Thread Sanitizer](http://clang.llvm.org/docs/ThreadSanitizer.html) (aka TSAN)
-is a powerful example of dynamic tools: it changes the build and execution of your program to add bookkeeping on memory access,
-absolutely identifying data races in a given execution of your binary.
-The cost for this is both memory (5-10x in most cases) and CPU slowdown (2-20x).
-Dynamic tools like this are best when applied to integration tests, canary pushes, or unittests that operate on multiple threads.
-Workload matters: When TSAN identifies a problem, it is effectively always an actual data race,
-but it can only identify races seen in a given execution.
+* 동적 지침 도구: Clang 의 [Thread Sanitizer](http://clang.llvm.org/docs/ThreadSanitizer.html) (aka TSAN)
+은 강력한 동적 도구의 한 예이다: 이 도구는 프로그램의 메모리 접근을 장부에 기록할 수 있도록 빌드 및 실행을 변경하여,
+해당 프로그램 실행시 데이터 경쟁을 확실히 검출해 낼 수 있도록 한다.
+이를 위해서는 메모리 사용랑 (대부분의 경우 5-10배) 과 CPU 성능저하 (2-20배) 를 비용으로 지불해야 한다.
+이러한 동적 도구들은 통합 테스트나 카나리아 테스트 혹은 복수의 스레드상에서 작동하는 단위테스트에 적용하기 가장 알맞다.
+작업량이 영향을 미친다: TSAN 이 검출해 낸 문제점은 거의 항상 실질적인 데이터 경쟁을 정확하게 짚어내지만,
+해당 실행 과정중에 발견된 문제만이 검출 가능하다.
 
 ##### Enforcement
 
-It is up to an application builder to choose which support tools are valuable for a particular applications.
+특정 프로그램들에 있어서 어떤 도구를 사용하는 것이 유용할 것인지 고르는 것은 해당 프로그램 제작자에게 달려 있다.
 
 ## <a name="SScp-con"></a>CP.con: 동시성
 
