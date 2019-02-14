@@ -1301,17 +1301,17 @@ C++11 의 스레드 안전한 정적 지역 변수를 사용하는 예제.
 
 ??? 저 idiom 확인할 수 있는 건가요?
 
-### <a name="Rconc-double-pattern"></a>CP.111: Use a conventional pattern if you really need double-checked locking
+### <a name="Rconc-double-pattern"></a>CP.111: 이중 확인 잠금이 꼭 필요할 경우에는 전통적인 패턴을 사용하라
 
 ##### Reason
 
-Double-checked locking is easy to mess up. If you really need to write your own double-checked locking, in spite of the rules [CP.110: Do not write your own double-checked locking for initialization](#Rconc-double) and [CP.100: Don't use lock-free programming unless you absolutely have to](#Rconc-lockfree), then do it in a conventional pattern.
+이중 확인 잠금 코드는 엉망으로 만들기 쉽다. [CP.110: 초기화를 위한 독자적인 이중 확인 잠금 코드를 작성하지 말라](#Rconc-double) 및 [CP.100: 정말 필요할 때만 lock-free 프로그래밍을 사용하라](#Rconc-lockfree) 과 같은 규칙에도 불구하고 독자적인 이중 확인 잠금 코드를 작성해야만 한다면, 전통적인 패턴을 이용해서 작성하도록 하라.
 
-The uses of the double-checked locking pattern that are not in violation of [CP.110: Do not write your own double-checked locking for initialization](#Rconc-double) arise when a non-thread-safe action is both hard and rare, and there exists a fast thread-safe test that can be used to guarantee that the action is not needed, but cannot be used to guarantee the converse.
+스레드 안전하지 않은 (non-thread-safe) 특정 동작에 있어, 동작 자체가 복잡하고도 수행 빈도가 낮으며 해당 동작의 수행이 필요하지 않다는 것을 보장하는 (그 반대의 경우를 보장하기 위해서는 사용할 수 없는) 신속하고도 스레드-안전한 시험 방법이 존재하는 상황에서의 이중 확인 잠금 패턴의 사용이  [CP.110: 초기화를 위한 독자적인 이중 확인 잠금 코드를 작성하지 말라](#Rconc-double) 을 위반하지 않는 경우에 해당한다.
 
 ##### Example, bad
 
-The use of volatile does not make the first check thread-safe, see also [CP.200: Use `volatile` only to talk to non-C++ memory](#Rconc-volatile2)
+volatile 의 사용을 통한 아래의 첫번째 시험은 스레드 안전하지 않다. [CP.200: `volatile`은 C++가 아닌 메모리에 대해서만 사용하라](#Rconc-volatile2) 을 참고하라.
 
 ```c++
     mutex action_mutex;
@@ -1341,7 +1341,7 @@ The use of volatile does not make the first check thread-safe, see also [CP.200:
     }
 ```
 
-Fine-tuned memory order may be beneficial where acquire load is more efficient than sequentially-consistent load
+획득 적재 (acquire load) 방식이 순차 일관 적재 (sequentially-consistent load) 방식보다 효율적인 경우, 미세 조정된 메모리 순서 (memory order) 를 통해 성능상 이점을 얻을 수 있다.
 
 ```c++
     mutex action_mutex;
@@ -1358,7 +1358,7 @@ Fine-tuned memory order may be beneficial where acquire load is more efficient t
 
 ##### Enforcement
 
-??? Is it possible to detect the idiom?
+??? 저 idiom 확인할 수 있는 건가요?
 
 ## <a name="SScp-etc"></a>CP.etc: 기타 동시성 규칙들
 
