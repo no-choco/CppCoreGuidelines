@@ -7,13 +7,13 @@
 
 상수 규칙 요약:
 
-* [Con.1: 객체가 변하지 않도록 하라](#Rconst-immutable)
-* [Con.2: 멤버 함수들은 `const`로 만들어라](#Rconst-fct)
-* [Con.3: 포인터와 참조는 `const`로 전달하라](#Rconst-ref)
+* [Con.1: 기본적으로 객체를 변경 불가능하도록 만들어라](#Rconst-immutable)
+* [Con.2: 기본적으로 멤버 함수들은 `const`로 만들어라](#Rconst-fct)
+* [Con.3: 기본적으로 포인터와 참조는 `const`로 전달하라](#Rconst-ref)
 * [Con.4: 개체 생성 이후 변하지 않는 값은 `const`로 정의하라](#Rconst-const)
-* [Con.5: 컴파일 시간에 계산될 수 있는 값은 `constexpr`를 사용하라](#Rconst-constexpr)
+* [Con.5: 컴파일 시간에 계산될 수 있는 값은 `constexpr`을 사용하라](#Rconst-constexpr)
 
-### <a name="Rconst-immutable"></a>Con.1: 객체가 변하지 않도록 하라
+### <a name="Rconst-immutable"></a>Con.1: 기본적으로 객체를 변경 불가능하도록 만들어라
 
 ##### Reason
 
@@ -45,7 +45,7 @@
 
 * 값이 변경되지 않는 비-`const` 변수들을 지적하라 (수많은 거짓 양성 테스트 결과를 피하기 위해 인자들에 대해서는 예외로 한다)
 
-### <a name="Rconst-fct"></a>Con.2: 멤버 함수들은 `const`로 만들어라
+### <a name="Rconst-fct"></a>Con.2: 기본적으로 멤버 함수들은 `const`로 만들어라
 
 ##### Reason
 
@@ -130,7 +130,7 @@ Example:
 
 * `const` 표시가 되어 있지 않지만, 어떠한 멤버 변수에 대해서도 비-`const` 작업을 수행하지 않는 멤버 함수를 지적하라
 
-### <a name="Rconst-ref"></a>Con.3: 포인터와 참조는 `const`로 전달하라
+### <a name="Rconst-ref"></a>Con.3: 기본적으로 포인터와 참조는 `const`로 전달하라
 
 ##### Reason
 
@@ -185,7 +185,7 @@ Example:
 
 * 변경되지 않는 비-`const` 변수들을 지적하라.
 
-### <a name="Rconst-constexpr"></a>Con.5: 컴파일 시간에 계산될 수 있는 값은 `constexpr`를 사용하라
+### <a name="Rconst-constexpr"></a>Con.5: 컴파일 시간에 계산될 수 있는 값은 `constexpr`을 사용하라
 
 ##### Reason
 
